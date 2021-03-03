@@ -2,37 +2,35 @@
 // Created by Mithrandir on 25/02/2021.
 //
 
+#include <Group.h>
+#include "SponsorshipHelper.hpp"
 #include "SponsorshipPlayer.hpp"
 #include "Chat.h"
-#include "SponsorshipHelper.hpp"
 #include "Config.h"
+#include "Log.h"
 
-void SponsorshipPlayer::OnLogin(Player *player) {
+void SponsorshipPlayer::OnGiveXP(Player* player, uint32& amount, Unit*) {
 
-    //Adding account of the player in the helper
-    if(!SponsorshipHelper::isRegisterAsGodfather(player)) {
+    Group* group = player->GetGroup();
 
-        std::pair<int, std::vector<std::pair<int, bool>>> newItem = std::make_pair(player->GetSession()->GetAccountId(), std::vector<std::pair<int, bool>>());
-        SponsorshipHelper::sponsorship.insert(newItem);
+    if(group != nullptr) {
+
+        for(const Group::MemberSlot& item : group->GetMemberSlots())
+        {
+
+            Player* player2 = sObjectAccessor->FindPlayer(item.guid);
+
+            if(SponsorshipHelper::areInSponsorship(player->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId()))
+                amount *= sConfigMgr->GetFloatDefault("Sponsorship.rateXp", 1.00);
+        }
+
     }
 
-    QueryResult result = LoginDatabase.PQuery("SELECT * FROM sponsorship WHERE nephew = %u", player->GetSession()->GetAccountId());
 
-    do {
-        Field* fields = result->Fetch();
-
-        uint32 godfather = fields[0].GetUInt32();
-        uint32 nephew = fields[1].GetUInt32();
-        time_t date = time_t(fields[2].GetUInt32());
-        bool isActive = (std::difftime(time(nullptr), date) < sConfigMgr->GetIntDefault("Sponsorship.maxDate", 90)*86400);
-
-
-
-    } while(result->NextRow());
 }
 
 
-void AddSC_Sponsorship()
+void AddSC_SponsorshipPlayer()
 {
     new SponsorshipPlayer();
 }

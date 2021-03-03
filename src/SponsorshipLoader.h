@@ -2,10 +2,13 @@
 
 #define SPONSORSHIP_LOADER_H
 
-void AddSC_Sponsorship();
+void AddSC_SponsorshipPlayer();
+void AddSC_SponsorshipGroup();
 
 void AddSponsorShipScripts() {
-    AddSC_Sponsorship();
+    AddSC_SponsorshipPlayer();
+    AddSC_SponsorshipGroup();
+
 }
 
 #endif

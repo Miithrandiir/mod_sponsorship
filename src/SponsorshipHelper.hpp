@@ -7,12 +7,12 @@
 
 
 class SponsorshipHelper {
-
 public:
+    static bool areInSponsorship(Player* , Player*);
+    static bool areInSponsorship(uint32 , uint32);
+    static bool canBenefit(Player*, Player*);
+    static std::vector<std::pair<uint32, uint32>> Cache;
 
-    static bool isRegisterAsGodfather(Player *player);
-
-    static std::map<int/*godfather*/, std::map<int/*nephew*/, bool/*isActive*/>> sponsorship;
 };
 
 

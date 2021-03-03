@@ -7,12 +7,14 @@
 
 #include "map"
 
+
 class SponsorshipPlayer : public PlayerScript {
 
 public:
     SponsorshipPlayer() : PlayerScript("SponsorshipPlayer") {}
 
-    void OnLogin(Player* player) override;
+    void OnGiveXP(Player* /*player*/, uint32& /*amount*/, Unit* /*victim*/) override;
+
 };
 
 
