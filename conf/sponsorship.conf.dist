@@ -1,0 +1,19 @@
+[worldserver]
+
+#
+# Number of day to benefit the sponsorship
+# default: 90
+#
+
+Sponsorship.maxDate=90;
+#
+# What buff is applied when a person join is sponsor
+# default: ""
+# template "1999;1999;19999"
+#
+Sponsorship.buff="";
+#
+# Rate XP
+# default: "1.00"
+#
+Sponsorship.rateXp=1.00
