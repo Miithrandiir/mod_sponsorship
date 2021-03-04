@@ -16,8 +16,10 @@ void SponsorshipPlayer::OnGiveXP(Player* player, uint32& amount, Unit*) {
         for(const Group::MemberSlot& item : group->GetMemberSlots())
         {
             Player* player2 = sObjectAccessor->FindPlayer(item.guid);
-            if(SponsorshipHelper::areInSponsorship(player->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId()))
-                amount *= sConfigMgr->GetFloatDefault("Sponsorship.rateXp", 1.00);
+            if(SponsorshipHelper::areInSponsorship(player->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId())) {
+                amount *= sConfigMgr->GetFloatDefault("Sponsorship.rateXp", 2.00f);
+                return;
+            }
         }
     }
 
