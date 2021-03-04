@@ -29,7 +29,7 @@ bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2) {
     //TODO check date validity
     Cache.emplace_back(player1->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId());
 
-    return (result != nullptr);
+    return (result != nullptr && result->GetRowCount() > 0);
 
 }
 
@@ -74,7 +74,7 @@ bool SponsorshipHelper::areInSponsorship(uint32 player1, uint32 player2) {
     //TODO check date validity
     Cache.emplace_back(player1, player2);
 
-    return (result != nullptr);
+    return (result->GetRowCount() > 0);
 }
 
 std::vector<uint32> SponsorshipHelper::getBuff() {
@@ -82,24 +82,20 @@ std::vector<uint32> SponsorshipHelper::getBuff() {
     std::vector<uint32> buffs;
 
     std::string strBuffs = sConfigMgr->GetStringDefault("Sponsorship.buff", "");
-    if(!buffs.empty()) {
 
-        std::regex regex("\\;");
-        std::vector<std::string> vBuff(
-                std::sregex_token_iterator(strBuffs.begin(), strBuffs.end(), regex, -1),
-                std::sregex_token_iterator()
-                );
+    std::istringstream streamBuff(strBuffs);
+    std::string value;
 
-        for(std::string& item : vBuff)
+    while(std::getline(streamBuff, value, ';')) {
+        if(value.empty())
+            continue;
+
+        try {
+            buffs.push_back((uint32)stoul(value));
+        } catch(invalid_argument& /*e*/)
         {
-            try {
-                buffs.push_back((uint32)stoul(item));
-            } catch(invalid_argument& /*e*/)
-            {
-                std::cout << "[sponsorship] Error when read AURA : " << item << std::endl;
-            }
+            std::cout << "[sponsorship] Error when reading AURA : " << value << std::endl;
         }
-
     }
 
     return buffs;

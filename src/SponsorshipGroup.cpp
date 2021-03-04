@@ -25,10 +25,10 @@ void SponsorshipGroup::OnAddMember(Group * group, uint64 guid) {
         if(SponsorshipHelper::areInSponsorship(playerAdded, member))
         {
             std::vector<uint32> buffs = SponsorshipHelper::getBuff();
-
+            std::cout << "size of buffs = " << buffs.size() << std::endl;
             for(uint32& buff : buffs) {
                 member->AddAura(buff, member);
-                playerAdded->AddAura(buff, member);
+                playerAdded->AddAura(buff, playerAdded);
             }
         }
 
