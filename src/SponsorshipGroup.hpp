@@ -12,7 +12,7 @@ public:
     SponsorshipGroup() : GroupScript("SponsorshipGroup") {}
 
     void OnAddMember(Group* /*group*/, uint64 /*guid*/) override;
-    virtual void OnRemoveMember(Group* /*group*/, uint64 /*guid*/, RemoveMethod /*method*/, uint64 /*kicker*/, const char* /*reason*/) override;
+    void OnRemoveMember(Group* /*group*/, uint64 /*guid*/, RemoveMethod /*method*/, uint64 /*kicker*/, const char* /*reason*/) override;
 
 
 };
