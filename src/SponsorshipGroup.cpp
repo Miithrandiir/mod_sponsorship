@@ -4,7 +4,7 @@
 #include <Group.h>
 #include "SponsorshipGroup.hpp"
 #include "SponsorshipHelper.hpp"
-
+#include "Config.h"
 
 void SponsorshipGroup::OnAddMember(Group * group, uint64 guid) {
 
@@ -24,8 +24,39 @@ void SponsorshipGroup::OnAddMember(Group * group, uint64 guid) {
 
         if(SponsorshipHelper::areInSponsorship(playerAdded, member))
         {
-            //@TODO ? buff or other
-            std::cout << "test compile" << std::endl;
+            std::vector<uint32> buffs = SponsorshipHelper::getBuff();
+
+            for(uint32& buff : buffs) {
+                member->AddAura(buff, member);
+                playerAdded->AddAura(buff, member);
+            }
+        }
+
+    }
+
+}
+
+void SponsorshipGroup::OnRemoveMember(Group * group, uint64 guid, RemoveMethod, uint64, const char *) {
+
+    Player* player2 = sObjectAccessor->FindPlayer(guid);
+    if(player2 == nullptr)
+        return;
+
+    for(const Group::MemberSlot& playerGroup : group->GetMemberSlots()) {
+
+        Player* player = sObjectAccessor->FindPlayer(playerGroup.guid);
+        if(player == nullptr)
+            continue;
+
+        if(SponsorshipHelper::areInSponsorship(player, player2)) {
+
+            std::vector<uint32> buffs = SponsorshipHelper::getBuff();
+
+            for(uint32& buff : buffs) {
+                player->RemoveAura(buff);
+                player2->RemoveAura(buff);
+            }
+
         }
 
     }

@@ -1,6 +1,6 @@
 # SKELETON - Module template
 
-[English](README.md) | [Español](README_ES.md)
+[English](README.md)
 
 
 ## How to create your own module

@@ -3,7 +3,8 @@
 //
 
 #include "SponsorshipHelper.hpp"
-
+#include "Config.h"
+#include "regex"
 std::vector<std::pair<uint32, uint32>> SponsorshipHelper::Cache;
 
 
@@ -74,4 +75,32 @@ bool SponsorshipHelper::areInSponsorship(uint32 player1, uint32 player2) {
     Cache.emplace_back(player1, player2);
 
     return (result != nullptr);
+}
+
+std::vector<uint32> SponsorshipHelper::getBuff() {
+
+    std::vector<uint32> buffs;
+
+    std::string strBuffs = sConfigMgr->GetStringDefault("Sponsorship.buff", "");
+    if(!buffs.empty()) {
+
+        std::regex regex("\\;");
+        std::vector<std::string> vBuff(
+                std::sregex_token_iterator(strBuffs.begin(), strBuffs.end(), regex, -1),
+                std::sregex_token_iterator()
+                );
+
+        for(std::string& item : vBuff)
+        {
+            try {
+                buffs.push_back((uint32)stoul(item));
+            } catch(invalid_argument& /*e*/)
+            {
+                std::cout << "[sponsorship] Error when read AURA : " << item << std::endl;
+            }
+        }
+
+    }
+
+    return buffs;
 }
