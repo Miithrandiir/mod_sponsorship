@@ -6,7 +6,7 @@ steps:
   - name: ac_core
     image: alpine
     commands:
-      - sudo apt-get update && sudo apt-get install git cmake make gcc g++ clang libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev mysql-server libace-6.* libace-dev
+      - apk update && apk add git cmake make gcc g++ clang libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev mysql-server libace-6.* libace-dev
       - git clone https://github.com/azerothcore/azerothcore-wotlk.git --branch master --single-branch azerothcore
       - cd azerothcore
       - mkdir build
