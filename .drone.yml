@@ -1,0 +1,17 @@
+kind: pipeline
+type: docker
+name: mod_sponsorship
+
+steps:
+  - name: ac_core
+    image: alpine
+    commands:
+      - sudo apt-get update && sudo apt-get install git cmake make gcc g++ clang libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev mysql-server libace-6.* libace-dev
+      - git clone https://github.com/azerothcore/azerothcore-wotlk.git --branch master --single-branch azerothcore
+      - cd azerothcore
+      - mkdir build
+      - cd modules
+      - git clone https://github.com/Miithrandiir/mod_sponsorship.git
+      - cd ../build
+      - cmake ../ -DCMAKE_INSTALL_PREFIX=$HOME/azeroth-server/ -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DWITH_WARNINGS=1 -DTOOLS=0 -DSCRIPTS=1
+      - make -j 6
