@@ -1,6 +1,7 @@
-//
-// Created by Mithrandir on 03/03/2021.
-//
+/*
+ * Copyright (C) 2021+     Miithrandiir <https://github.com/Miithrandiir/sponsorship>, released under GNU AGPL v3 license: LICENSE-AGPL3.md
+ */
+
 
 #ifndef AZEROTHCORE_SPONSORSHIPGROUP_HPP
 #define AZEROTHCORE_SPONSORSHIPGROUP_HPP

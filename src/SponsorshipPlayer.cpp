@@ -1,6 +1,7 @@
-//
-// Created by Mithrandir on 25/02/2021.
-//
+/*
+ * Copyright (C) 2021+     Miithrandiir <https://github.com/Miithrandiir/sponsorship>, released under GNU AGPL v3 license: LICENSE-AGPL3.md
+ */
+
 
 #include <Group.h>
 #include "SponsorshipHelper.hpp"

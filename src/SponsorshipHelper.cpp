@@ -1,10 +1,13 @@
-//
-// Created by Mithrandir on 25/02/2021.
-//
+/*
+ * Copyright (C) 2021+     Miithrandiir <https://github.com/Miithrandiir/sponsorship>, released under GNU AGPL v3 license: LICENSE-AGPL3.md
+ */
+
 
 #include "SponsorshipHelper.hpp"
 #include "Config.h"
 #include "regex"
+
+
 std::vector<std::pair<uint32, uint32>> SponsorshipHelper::Cache;
 
 
@@ -20,13 +23,13 @@ bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2) {
         return true;
 
 
-    QueryResult result = LoginDatabase.PQuery("SELECT * FROM sponsorship WHERE godfather = %u AND nephew = %u OR godfather = %u AND nephew = %u",
+    QueryResult result = LoginDatabase.PQuery("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
                                               player1->GetSession()->GetAccountId(),
                                               player2->GetSession()->GetAccountId(),
                                               player2->GetSession()->GetAccountId(),
-                                              player1->GetSession()->GetAccountId());
+                                              player1->GetSession()->GetAccountId(),
+                                              sConfigMgr->GetIntDefault("Sponsorship.durationDay",90));
 
-    //TODO check date validity
     Cache.emplace_back(player1->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId());
 
     return (result != nullptr && result->GetRowCount() > 0);
@@ -65,13 +68,13 @@ bool SponsorshipHelper::areInSponsorship(uint32 player1, uint32 player2) {
         return true;
 
 
-    QueryResult result = LoginDatabase.PQuery("SELECT * FROM sponsorship WHERE godfather = %u AND nephew = %u OR godfather = %u AND nephew = %u",
+    QueryResult result = LoginDatabase.PQuery("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
                                               player1,
                                               player2,
                                               player2,
-                                              player1);
+                                              player1,
+                                              sConfigMgr->GetIntDefault("Sponsorship.durationDay",90));
 
-    //TODO check date validity
     Cache.emplace_back(player1, player2);
 
     return (result->GetRowCount() > 0);

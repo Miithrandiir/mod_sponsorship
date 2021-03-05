@@ -6,14 +6,25 @@
 #
 
 Sponsorship.maxDate=90;
+
 #
 # What buff is applied when a person join is sponsor
 # default: ""
 # template "1999;1999;19999;"
 #
+
 Sponsorship.buff="35912;";
+
 #
 # Rate XP
 # default: "1.00"
 #
-Sponsorship.rateXp=1.00
+
+Sponsorship.rateXp=1.00;
+
+#
+# Duration of the sponsorship (in day)
+# default: 90 days
+#
+#
+Sponsorship.durationDay = 90
