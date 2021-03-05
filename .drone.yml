@@ -4,9 +4,9 @@ name: mod_sponsorship
 
 steps:
   - name: ac_core
-    image: alpine
+    image: debian
     commands:
-      - apk update && apk add git cmake make gcc g++ clang libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev mysql-server libace-6.* libace-dev
+      - apt-get update -y && apt-get install git cmake make gcc g++ clang default-libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev mariadb-server libace-6.* libace-dev -y
       - git clone https://github.com/azerothcore/azerothcore-wotlk.git --branch master --single-branch azerothcore
       - cd azerothcore
       - mkdir build
