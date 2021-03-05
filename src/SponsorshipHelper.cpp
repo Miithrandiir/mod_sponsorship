@@ -16,11 +16,13 @@ bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2) {
 
     //By making a cache we avoid a huge workload on database
     auto it = std::find(Cache.begin(), Cache.end(), std::make_pair(player1->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId()));
-    if(it != Cache.end())
+    if(it != Cache.end()) {
         return true;
+    }
     it = std::find(Cache.begin(), Cache.end(), std::make_pair(player2->GetSession()->GetAccountId(), player1->GetSession()->GetAccountId()));
-    if(it != Cache.end())
+    if(it != Cache.end()) {
         return true;
+    }
 
 
     QueryResult result = LoginDatabase.PQuery("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
@@ -61,11 +63,13 @@ bool SponsorshipHelper::canBenefit(Player * player1, Player *player2) {
 
 bool SponsorshipHelper::areInSponsorship(uint32 player1, uint32 player2) {
     auto it = std::find(Cache.begin(), Cache.end(), std::make_pair(player1, player2));
-    if(it != Cache.end())
+    if(it != Cache.end()) {
         return true;
+    }
     it = std::find(Cache.begin(), Cache.end(), std::make_pair(player2, player1));
-    if(it != Cache.end())
+    if(it != Cache.end()) {
         return true;
+    }
 
 
     QueryResult result = LoginDatabase.PQuery("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
@@ -90,8 +94,9 @@ std::vector<uint32> SponsorshipHelper::getBuff() {
     std::string value;
 
     while(std::getline(streamBuff, value, ';')) {
-        if(value.empty())
+        if(value.empty()) {
             continue;
+        }
 
         try {
             buffs.push_back((uint32)stoul(value));

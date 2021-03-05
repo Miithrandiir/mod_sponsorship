@@ -15,13 +15,15 @@ void SponsorshipGroup::OnAddMember(Group * group, uint64 guid) {
 
     for(const Group::MemberSlot& player : group->GetMemberSlots())
     {
-        if(player.guid == guid)
+        if(player.guid == guid) {
             continue;
+        }
 
         Player* member = sObjectAccessor->FindPlayer(player.guid);
 
-        if(!member)
+        if(!member) {
             continue;
+        }
 
         if(SponsorshipHelper::areInSponsorship(playerAdded, member))
         {
@@ -40,14 +42,16 @@ void SponsorshipGroup::OnAddMember(Group * group, uint64 guid) {
 void SponsorshipGroup::OnRemoveMember(Group * group, uint64 guid, RemoveMethod, uint64, const char *) {
 
     Player* player2 = sObjectAccessor->FindPlayer(guid);
-    if(player2 == nullptr)
+    if(player2 == nullptr) {
         return;
+    }
 
     for(const Group::MemberSlot& playerGroup : group->GetMemberSlots()) {
 
         Player* player = sObjectAccessor->FindPlayer(playerGroup.guid);
-        if(player == nullptr)
+        if(player == nullptr) {
             continue;
+        }
 
         if(SponsorshipHelper::areInSponsorship(player, player2)) {
 

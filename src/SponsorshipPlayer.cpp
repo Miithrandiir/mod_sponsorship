@@ -16,8 +16,9 @@ void SponsorshipPlayer::OnGiveXP(Player* player, uint32& amount, Unit*) {
     if(group != nullptr) {
         for(const Group::MemberSlot& item : group->GetMemberSlots())
         {
-            if(item.guid == player->GetGUID())
+            if(item.guid == player->GetGUID()) {
                 continue;
+            }
 
             Player* player2 = sObjectAccessor->FindPlayer(item.guid);
             if(SponsorshipHelper::areInSponsorship(player->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId())) {
