@@ -1,4 +1,4 @@
-# mod_sponsorship - Module template
+# mod_sponsorship - Module template [![Build Status](https://cloud.drone.io/api/badges/Miithrandiir/mod_sponsorship/status.svg)](https://cloud.drone.io/Miithrandiir/mod_sponsorship)
 
 This module allow you to create a sponsorship between two players. The effect will be buff applied and rate xp modified.
 All of this can be modified in the sponsorship.conf
