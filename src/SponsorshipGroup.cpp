@@ -2,14 +2,12 @@
  * Copyright (C) 2021+     Miithrandiir <https://github.com/Miithrandiir/sponsorship>, released under GNU AGPL v3 license: LICENSE-AGPL3.md
  */
 
-#include <Group.h>
 #include "SponsorshipGroup.hpp"
-#include "SponsorshipHelper.hpp"
-#include "Config.h"
 
-void SponsorshipGroup::OnAddMember(Group * group, uint64 guid)
+void SponsorshipGroup::OnAddMember(Group * group, ObjectGuid guid)
 {
-    Player* playerAdded = sObjectAccessor->FindPlayer(guid);
+    Player* playerAdded = ObjectAccessor::FindPlayer(guid);
+
     if(!playerAdded)
         return;
 
@@ -20,7 +18,7 @@ void SponsorshipGroup::OnAddMember(Group * group, uint64 guid)
             continue;
         }
 
-        Player* member = sObjectAccessor->FindPlayer(player.guid);
+        Player* member = ObjectAccessor::FindPlayer(player.guid);
 
         if(!member)
         {
@@ -41,9 +39,9 @@ void SponsorshipGroup::OnAddMember(Group * group, uint64 guid)
     }
 }
 
-void SponsorshipGroup::OnRemoveMember(Group * group, uint64 guid, RemoveMethod, uint64, const char *)
+void SponsorshipGroup::OnRemoveMember(Group * group, ObjectGuid guid, RemoveMethod, ObjectGuid, const char *)
 {
-    Player* player2 = sObjectAccessor->FindPlayer(guid);
+    Player* player2 = ObjectAccessor::FindPlayer(guid);
 
     if(player2 == nullptr)
     {
@@ -52,7 +50,7 @@ void SponsorshipGroup::OnRemoveMember(Group * group, uint64 guid, RemoveMethod, 
 
     for(const Group::MemberSlot& playerGroup : group->GetMemberSlots())
     {
-        Player* player = sObjectAccessor->FindPlayer(playerGroup.guid);
+        Player* player = ObjectAccessor::FindPlayer(playerGroup.guid);
         if(player == nullptr) {
             continue;
         }

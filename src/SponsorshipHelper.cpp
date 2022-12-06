@@ -4,12 +4,8 @@
 
 
 #include "SponsorshipHelper.hpp"
-#include "Config.h"
-#include "regex"
-
 
 std::vector<std::pair<uint32, uint32>> SponsorshipHelper::Cache;
-
 
 bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2)
 {
@@ -26,7 +22,7 @@ bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2)
         return true;
     }
 
-    QueryResult result = LoginDatabase.PQuery("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
+    QueryResult result = LoginDatabase.Query("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
                                               player1->GetSession()->GetAccountId(),
                                               player2->GetSession()->GetAccountId(),
                                               player2->GetSession()->GetAccountId(),
@@ -41,9 +37,9 @@ bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2)
 bool SponsorshipHelper::canBenefit(Player * player1, Player *player2)
 {
     //Check IP
-    QueryResult resultPlayer1 = LoginDatabase.PQuery("SELECT last_ip FROM account WHERE id = %u",
+    QueryResult resultPlayer1 = LoginDatabase.Query("SELECT last_ip FROM account WHERE id = %u",
                                                      player1->GetSession()->GetAccountId());
-    QueryResult resultPlayer2 = LoginDatabase.PQuery("SELECT last_ip FROM account WHERE id = %u",
+    QueryResult resultPlayer2 = LoginDatabase.Query("SELECT last_ip FROM account WHERE id = %u",
                                                      player1->GetSession()->GetAccountId());
 
     if (resultPlayer1 == nullptr && resultPlayer2 == nullptr) {
@@ -55,8 +51,8 @@ bool SponsorshipHelper::canBenefit(Player * player1, Player *player2)
 
     Field *fieldsPlayer1 = resultPlayer1->Fetch();
     Field *fieldsPlayer2 = resultPlayer2->Fetch();
-    std::string ipAddressP1 = fieldsPlayer1[0].GetString();
-    std::string ipAddressP2 = fieldsPlayer2[0].GetString();
+    std::string ipAddressP1 = fieldsPlayer1[0].Get<std::string>();
+    std::string ipAddressP2 = fieldsPlayer2[0].Get<std::string>();
 
     return (ipAddressP1 != ipAddressP2);
 }
@@ -73,7 +69,7 @@ bool SponsorshipHelper::areInSponsorship(uint32 player1, uint32 player2)
         return true;
     }
 
-    QueryResult result = LoginDatabase.PQuery("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
+    QueryResult result = LoginDatabase.Query("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
                                               player1,
                                               player2,
                                               player2,
@@ -94,14 +90,18 @@ std::vector<uint32> SponsorshipHelper::getBuff()
     std::istringstream streamBuff(strBuffs);
     std::string value;
 
-    while(std::getline(streamBuff, value, ';')) {
-        if(value.empty()) {
+    while(std::getline(streamBuff, value, ';'))
+    {
+        if(value.empty())
+        {
             continue;
         }
 
-        try {
+        try
+        {
             buffs.push_back((uint32)stoul(value));
-        } catch(invalid_argument& /*e*/)
+        }
+        catch(std::invalid_argument& /*e*/)
         {
             std::cout << "[sponsorship] Error when reading AURA : " << value << std::endl;
         }

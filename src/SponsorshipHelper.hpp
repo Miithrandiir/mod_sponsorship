@@ -6,6 +6,8 @@
 #ifndef AZEROTHCORE_SPONSORSHIPHELPER_HPP
 #define AZEROTHCORE_SPONSORSHIPHELPER_HPP
 
+#include "Config.h"
+#include "Player.h"
 
 class SponsorshipHelper
 {

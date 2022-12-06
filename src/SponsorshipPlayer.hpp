@@ -6,7 +6,13 @@
 #ifndef AZEROTHCORE_SPONSORSHIPPLAYER_HPP
 #define AZEROTHCORE_SPONSORSHIPPLAYER_HPP
 
-#include "map"
+#include "ScriptMgr.h"
+#include "Chat.h"
+#include "Config.h"
+#include "Log.h"
+#include "Player.h"
+#include <Group.h>
+#include "SponsorshipHelper.hpp"
 
 class SponsorshipPlayer : public PlayerScript
 {
