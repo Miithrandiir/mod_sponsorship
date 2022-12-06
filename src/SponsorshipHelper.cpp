@@ -27,7 +27,7 @@ bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2)
                                               player2->GetSession()->GetAccountId(),
                                               player2->GetSession()->GetAccountId(),
                                               player1->GetSession()->GetAccountId(),
-                                              sConfigMgr->GetIntDefault("Sponsorship.durationDay",90));
+                                              sConfigMgr->GetOption<uint32>("Sponsorship.durationDay",90));
 
     Cache.emplace_back(player1->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId());
 
@@ -74,7 +74,7 @@ bool SponsorshipHelper::areInSponsorship(uint32 player1, uint32 player2)
                                               player2,
                                               player2,
                                               player1,
-                                              sConfigMgr->GetIntDefault("Sponsorship.durationDay",90));
+                                              sConfigMgr->GetOption<uint32>("Sponsorship.durationDay",90));
 
     Cache.emplace_back(player1, player2);
 
@@ -85,7 +85,7 @@ std::vector<uint32> SponsorshipHelper::getBuff()
 {
     std::vector<uint32> buffs;
 
-    std::string strBuffs = sConfigMgr->GetStringDefault("Sponsorship.buff", "");
+    std::string strBuffs = sConfigMgr->GetOption<std::string>("Sponsorship.buff", "");
 
     std::istringstream streamBuff(strBuffs);
     std::string value;

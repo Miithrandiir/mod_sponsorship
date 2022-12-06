@@ -22,7 +22,7 @@ void SponsorshipPlayer::OnGiveXP(Player* player, uint32& amount, Unit*)
             if(SponsorshipHelper::areInSponsorship(player->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId()))
             {
                 std::cout << "default amount of xp : " << amount << std::endl;
-                amount *= sConfigMgr->GetFloatDefault("Sponsorship.rateXp", 2.00f);
+                amount *= sConfigMgr->GetOption<float>("Sponsorship.rateXp", 2.00f);
                 return;
             }
         }
