@@ -6,6 +6,8 @@
 #include "SponsorshipHelper.hpp"
 #include "Config.h"
 #include "regex"
+#include "ScriptMgr.h"
+#include "Player.h"
 
 
 std::vector<std::pair<uint32, uint32>> SponsorshipHelper::Cache;
@@ -25,7 +27,7 @@ bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2) {
     }
 
 
-    QueryResult result = LoginDatabase.PQuery("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
+    QueryResult result = LoginDatabase.Query("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
                                               player1->GetSession()->GetAccountId(),
                                               player2->GetSession()->GetAccountId(),
                                               player2->GetSession()->GetAccountId(),
@@ -41,9 +43,9 @@ bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2) {
 bool SponsorshipHelper::canBenefit(Player * player1, Player *player2) {
 
     //Check IP
-    QueryResult resultPlayer1 = LoginDatabase.PQuery("SELECT last_ip FROM account WHERE id = %u",
+    QueryResult resultPlayer1 = LoginDatabase.Query("SELECT last_ip FROM account WHERE id = %u",
                                                      player1->GetSession()->GetAccountId());
-    QueryResult resultPlayer2 = LoginDatabase.PQuery("SELECT last_ip FROM account WHERE id = %u",
+    QueryResult resultPlayer2 = LoginDatabase.Query("SELECT last_ip FROM account WHERE id = %u",
                                                      player1->GetSession()->GetAccountId());
 
     if (resultPlayer1 == nullptr && resultPlayer2 == nullptr) {
@@ -53,10 +55,8 @@ bool SponsorshipHelper::canBenefit(Player * player1, Player *player2) {
         return false;
     }
 
-    Field *fieldsPlayer1 = resultPlayer1->Fetch();
-    Field *fieldsPlayer2 = resultPlayer2->Fetch();
-    std::string ipAddressP1 = fieldsPlayer1[0].GetString();
-    std::string ipAddressP2 = fieldsPlayer2[0].GetString();
+    std::string ipAddressP1 = (*resultPlayer1)[0].Get<std::string>();
+    std::string ipAddressP2 = (*resultPlayer2)[0].Get<std::string>();
 
     return (ipAddressP1 != ipAddressP2);
 }
@@ -72,7 +72,7 @@ bool SponsorshipHelper::areInSponsorship(uint32 player1, uint32 player2) {
     }
 
 
-    QueryResult result = LoginDatabase.PQuery("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
+    QueryResult result = LoginDatabase.Query("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
                                               player1,
                                               player2,
                                               player2,

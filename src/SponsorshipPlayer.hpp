@@ -7,6 +7,7 @@
 #define AZEROTHCORE_SPONSORSHIPPLAYER_HPP
 
 #include "map"
+#include "ScriptMgr.h"
 
 
 class SponsorshipPlayer : public PlayerScript {

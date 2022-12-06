@@ -9,6 +9,7 @@
 #include "Chat.h"
 #include "Config.h"
 #include "Log.h"
+#include "Player.h"
 
 void SponsorshipPlayer::OnGiveXP(Player* player, uint32& amount, Unit*) {
 
@@ -20,7 +21,7 @@ void SponsorshipPlayer::OnGiveXP(Player* player, uint32& amount, Unit*) {
                 continue;
             }
 
-            Player* player2 = sObjectAccessor->FindPlayer(item.guid);
+            Player* player2 = ObjectAccessor::FindPlayer(item.guid);
             if(SponsorshipHelper::areInSponsorship(player->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId())) {
                 std::cout << "default amount of xp : " << amount << std::endl;
                 amount *= sConfigMgr->GetFloatDefault("Sponsorship.rateXp", 2.00f);

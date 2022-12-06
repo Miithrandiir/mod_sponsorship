@@ -6,10 +6,11 @@
 #include "SponsorshipGroup.hpp"
 #include "SponsorshipHelper.hpp"
 #include "Config.h"
+#include "Player.h"
 
-void SponsorshipGroup::OnAddMember(Group * group, uint64 guid) {
+void SponsorshipGroup::OnAddMember(Group* group, uint64 guid) {
 
-    Player* playerAdded = sObjectAccessor->FindPlayer(guid);
+    Player* playerAdded = ObjectAccessor::FindPlayerByLowGUID(guid);
     if(!playerAdded)
         return;
 
@@ -19,7 +20,7 @@ void SponsorshipGroup::OnAddMember(Group * group, uint64 guid) {
             continue;
         }
 
-        Player* member = sObjectAccessor->FindPlayer(player.guid);
+        Player* member = ObjectAccessor::FindPlayer(player.guid);
 
         if(!member) {
             continue;
@@ -39,16 +40,16 @@ void SponsorshipGroup::OnAddMember(Group * group, uint64 guid) {
 
 }
 
-void SponsorshipGroup::OnRemoveMember(Group * group, uint64 guid, RemoveMethod, uint64, const char *) {
+void SponsorshipGroup::OnRemoveMember(Group* group, uint64 guid, RemoveMethod, uint64, const char *) {
 
-    Player* player2 = sObjectAccessor->FindPlayer(guid);
+    Player* player2 = ObjectAccessor::FindPlayerByLowGUID(guid);
     if(player2 == nullptr) {
         return;
     }
 
     for(const Group::MemberSlot& playerGroup : group->GetMemberSlots()) {
 
-        Player* player = sObjectAccessor->FindPlayer(playerGroup.guid);
+        Player* player = ObjectAccessor::FindPlayer(playerGroup.guid);
         if(player == nullptr) {
             continue;
         }
