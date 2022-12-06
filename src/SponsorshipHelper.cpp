@@ -22,7 +22,7 @@ bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2)
         return true;
     }
 
-    QueryResult result = LoginDatabase.Query("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
+    QueryResult result = LoginDatabase.Query("SELECT * FROM sponsorship WHERE ((godfather = {} AND nephew = {}) OR (godfather = {} AND nephew = {})) AND begin <= NOW() + interval {} day",
                                               player1->GetSession()->GetAccountId(),
                                               player2->GetSession()->GetAccountId(),
                                               player2->GetSession()->GetAccountId(),
@@ -37,9 +37,9 @@ bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2)
 bool SponsorshipHelper::canBenefit(Player * player1, Player *player2)
 {
     //Check IP
-    QueryResult resultPlayer1 = LoginDatabase.Query("SELECT last_ip FROM account WHERE id = %u",
+    QueryResult resultPlayer1 = LoginDatabase.Query("SELECT last_ip FROM account WHERE id = {}",
                                                      player1->GetSession()->GetAccountId());
-    QueryResult resultPlayer2 = LoginDatabase.Query("SELECT last_ip FROM account WHERE id = %u",
+    QueryResult resultPlayer2 = LoginDatabase.Query("SELECT last_ip FROM account WHERE id = {}",
                                                      player1->GetSession()->GetAccountId());
 
     if (resultPlayer1 == nullptr && resultPlayer2 == nullptr) {
@@ -69,7 +69,7 @@ bool SponsorshipHelper::areInSponsorship(uint32 player1, uint32 player2)
         return true;
     }
 
-    QueryResult result = LoginDatabase.Query("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
+    QueryResult result = LoginDatabase.Query("SELECT * FROM sponsorship WHERE ((godfather = {} AND nephew = {}) OR (godfather = {} AND nephew = {})) AND begin <= NOW() + interval {} day",
                                               player1,
                                               player2,
                                               player2,
