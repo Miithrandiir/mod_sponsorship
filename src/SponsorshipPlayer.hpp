@@ -8,14 +8,13 @@
 
 #include "map"
 
-
-class SponsorshipPlayer : public PlayerScript {
+class SponsorshipPlayer : public PlayerScript
+{
 
 public:
     SponsorshipPlayer() : PlayerScript("SponsorshipPlayer") {}
 
     void OnGiveXP(Player* /*player*/, uint32& /*amount*/, Unit* /*victim*/) override;
-
 };
 
 

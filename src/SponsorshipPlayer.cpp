@@ -10,26 +10,29 @@
 #include "Config.h"
 #include "Log.h"
 
-void SponsorshipPlayer::OnGiveXP(Player* player, uint32& amount, Unit*) {
-
+void SponsorshipPlayer::OnGiveXP(Player* player, uint32& amount, Unit*)
+{
     Group* group = player->GetGroup();
-    if(group != nullptr) {
+
+    if(group != nullptr)
+    {
         for(const Group::MemberSlot& item : group->GetMemberSlots())
         {
-            if(item.guid == player->GetGUID()) {
+            if(item.guid == player->GetGUID())
+            {
                 continue;
             }
 
             Player* player2 = sObjectAccessor->FindPlayer(item.guid);
-            if(SponsorshipHelper::areInSponsorship(player->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId())) {
+
+            if(SponsorshipHelper::areInSponsorship(player->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId()))
+            {
                 std::cout << "default amount of xp : " << amount << std::endl;
                 amount *= sConfigMgr->GetFloatDefault("Sponsorship.rateXp", 2.00f);
                 return;
             }
         }
     }
-
-
 }
 
 
