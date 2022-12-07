@@ -4,46 +4,42 @@
 
 
 #include "SponsorshipHelper.hpp"
-#include "Config.h"
-#include "regex"
-
 
 std::vector<std::pair<uint32, uint32>> SponsorshipHelper::Cache;
 
-
-bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2) {
-
-
+bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2)
+{
     //By making a cache we avoid a huge workload on database
     auto it = std::find(Cache.begin(), Cache.end(), std::make_pair(player1->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId()));
-    if(it != Cache.end()) {
+    if(it != Cache.end())
+    {
         return true;
     }
+
     it = std::find(Cache.begin(), Cache.end(), std::make_pair(player2->GetSession()->GetAccountId(), player1->GetSession()->GetAccountId()));
-    if(it != Cache.end()) {
+    if(it != Cache.end())
+    {
         return true;
     }
 
-
-    QueryResult result = LoginDatabase.PQuery("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
+    QueryResult result = LoginDatabase.Query("SELECT * FROM sponsorship WHERE ((godfather = {} AND nephew = {}) OR (godfather = {} AND nephew = {})) AND begin <= NOW() + interval {} day",
                                               player1->GetSession()->GetAccountId(),
                                               player2->GetSession()->GetAccountId(),
                                               player2->GetSession()->GetAccountId(),
                                               player1->GetSession()->GetAccountId(),
-                                              sConfigMgr->GetIntDefault("Sponsorship.durationDay",90));
+                                              sConfigMgr->GetOption<uint32>("Sponsorship.durationDay",90));
 
     Cache.emplace_back(player1->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId());
 
     return (result != nullptr && result->GetRowCount() > 0);
-
 }
 
-bool SponsorshipHelper::canBenefit(Player * player1, Player *player2) {
-
+bool SponsorshipHelper::canBenefit(Player * player1, Player *player2)
+{
     //Check IP
-    QueryResult resultPlayer1 = LoginDatabase.PQuery("SELECT last_ip FROM account WHERE id = %u",
+    QueryResult resultPlayer1 = LoginDatabase.Query("SELECT last_ip FROM account WHERE id = {}",
                                                      player1->GetSession()->GetAccountId());
-    QueryResult resultPlayer2 = LoginDatabase.PQuery("SELECT last_ip FROM account WHERE id = %u",
+    QueryResult resultPlayer2 = LoginDatabase.Query("SELECT last_ip FROM account WHERE id = {}",
                                                      player1->GetSession()->GetAccountId());
 
     if (resultPlayer1 == nullptr && resultPlayer2 == nullptr) {
@@ -55,52 +51,57 @@ bool SponsorshipHelper::canBenefit(Player * player1, Player *player2) {
 
     Field *fieldsPlayer1 = resultPlayer1->Fetch();
     Field *fieldsPlayer2 = resultPlayer2->Fetch();
-    std::string ipAddressP1 = fieldsPlayer1[0].GetString();
-    std::string ipAddressP2 = fieldsPlayer2[0].GetString();
+    std::string ipAddressP1 = fieldsPlayer1[0].Get<std::string>();
+    std::string ipAddressP2 = fieldsPlayer2[0].Get<std::string>();
 
     return (ipAddressP1 != ipAddressP2);
 }
 
-bool SponsorshipHelper::areInSponsorship(uint32 player1, uint32 player2) {
+bool SponsorshipHelper::areInSponsorship(uint32 player1, uint32 player2)
+{
     auto it = std::find(Cache.begin(), Cache.end(), std::make_pair(player1, player2));
     if(it != Cache.end()) {
         return true;
     }
+
     it = std::find(Cache.begin(), Cache.end(), std::make_pair(player2, player1));
     if(it != Cache.end()) {
         return true;
     }
 
-
-    QueryResult result = LoginDatabase.PQuery("SELECT * FROM sponsorship WHERE ((godfather = %u AND nephew = %u) OR (godfather = %u AND nephew = %u)) AND begin <= NOW() + interval %u day",
+    QueryResult result = LoginDatabase.Query("SELECT * FROM sponsorship WHERE ((godfather = {} AND nephew = {}) OR (godfather = {} AND nephew = {})) AND begin <= NOW() + interval {} day",
                                               player1,
                                               player2,
                                               player2,
                                               player1,
-                                              sConfigMgr->GetIntDefault("Sponsorship.durationDay",90));
+                                              sConfigMgr->GetOption<uint32>("Sponsorship.durationDay",90));
 
     Cache.emplace_back(player1, player2);
 
     return (result->GetRowCount() > 0);
 }
 
-std::vector<uint32> SponsorshipHelper::getBuff() {
-
+std::vector<uint32> SponsorshipHelper::getBuff()
+{
     std::vector<uint32> buffs;
 
-    std::string strBuffs = sConfigMgr->GetStringDefault("Sponsorship.buff", "");
+    std::string strBuffs = sConfigMgr->GetOption<std::string>("Sponsorship.buff", "");
 
     std::istringstream streamBuff(strBuffs);
     std::string value;
 
-    while(std::getline(streamBuff, value, ';')) {
-        if(value.empty()) {
+    while(std::getline(streamBuff, value, ';'))
+    {
+        if(value.empty())
+        {
             continue;
         }
 
-        try {
+        try
+        {
             buffs.push_back((uint32)stoul(value));
-        } catch(invalid_argument& /*e*/)
+        }
+        catch(std::invalid_argument& /*e*/)
         {
             std::cout << "[sponsorship] Error when reading AURA : " << value << std::endl;
         }

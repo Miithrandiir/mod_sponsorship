@@ -6,15 +6,17 @@
 #ifndef AZEROTHCORE_SPONSORSHIPHELPER_HPP
 #define AZEROTHCORE_SPONSORSHIPHELPER_HPP
 
+#include "Config.h"
+#include "Player.h"
 
-class SponsorshipHelper {
+class SponsorshipHelper
+{
 public:
     static bool areInSponsorship(Player* , Player*);
     static bool areInSponsorship(uint32 , uint32);
     static bool canBenefit(Player*, Player*);
     static std::vector<uint32> getBuff();
     static std::vector<std::pair<uint32, uint32>> Cache;
-
 };
 
 

@@ -6,16 +6,21 @@
 #ifndef AZEROTHCORE_SPONSORSHIPPLAYER_HPP
 #define AZEROTHCORE_SPONSORSHIPPLAYER_HPP
 
-#include "map"
+#include "ScriptMgr.h"
+#include "Chat.h"
+#include "Config.h"
+#include "Log.h"
+#include "Player.h"
+#include <Group.h>
+#include "SponsorshipHelper.hpp"
 
-
-class SponsorshipPlayer : public PlayerScript {
+class SponsorshipPlayer : public PlayerScript
+{
 
 public:
     SponsorshipPlayer() : PlayerScript("SponsorshipPlayer") {}
 
     void OnGiveXP(Player* /*player*/, uint32& /*amount*/, Unit* /*victim*/) override;
-
 };
 
 
