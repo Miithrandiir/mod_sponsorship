@@ -7,7 +7,7 @@
 
 std::vector<std::pair<uint32, uint32>> SponsorshipHelper::Cache;
 
-bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2)
+bool SponsorshipHelper::AreInSponsorship(Player *player1, Player *player2)
 {
     //By making a cache we avoid a huge workload on database
     auto it = std::find(Cache.begin(), Cache.end(), std::make_pair(player1->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId()));
@@ -34,7 +34,7 @@ bool SponsorshipHelper::areInSponsorship(Player *player1, Player *player2)
     return (result != nullptr && result->GetRowCount() > 0);
 }
 
-bool SponsorshipHelper::canBenefit(Player * player1, Player *player2)
+bool SponsorshipHelper::CanBenefit(Player * player1, Player *player2)
 {
     //Check IP
     QueryResult resultPlayer1 = LoginDatabase.Query("SELECT last_ip FROM account WHERE id = {}",
@@ -58,7 +58,7 @@ bool SponsorshipHelper::canBenefit(Player * player1, Player *player2)
     return (ipAddressP1 != ipAddressP2);
 }
 
-bool SponsorshipHelper::areInSponsorship(uint32 player1, uint32 player2)
+bool SponsorshipHelper::AreInSponsorship(uint32 player1, uint32 player2)
 {
     auto it = std::find(Cache.begin(), Cache.end(), std::make_pair(player1, player2));
     if(it != Cache.end())
@@ -84,7 +84,7 @@ bool SponsorshipHelper::areInSponsorship(uint32 player1, uint32 player2)
     return (result->GetRowCount() > 0);
 }
 
-std::vector<uint32> SponsorshipHelper::getBuff()
+std::vector<uint32> SponsorshipHelper::GetBuff()
 {
     std::vector<uint32> buffs;
 

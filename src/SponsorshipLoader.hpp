@@ -5,10 +5,6 @@
 void AddSC_SponsorshipPlayer();
 void AddSC_SponsorshipGroup();
 
-void AddSponsorShipScripts()
-{
-    AddSC_SponsorshipPlayer();
-    AddSC_SponsorshipGroup();
-}
+void Addmod_sponsorshipScripts();
 
 #endif
