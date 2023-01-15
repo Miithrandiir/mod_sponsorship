@@ -42,8 +42,7 @@ void SponsorshipGroup::OnAddMember(Group * group, ObjectGuid guid)
 void SponsorshipGroup::OnRemoveMember(Group * group, ObjectGuid guid, RemoveMethod, ObjectGuid, const char *)
 {
     Player* player2 = ObjectAccessor::FindPlayer(guid);
-
-    if(player2 == nullptr)
+    if(!player2)
     {
         return;
     }
@@ -51,7 +50,8 @@ void SponsorshipGroup::OnRemoveMember(Group * group, ObjectGuid guid, RemoveMeth
     for(const Group::MemberSlot& playerGroup : group->GetMemberSlots())
     {
         Player* player = ObjectAccessor::FindPlayer(playerGroup.guid);
-        if(player == nullptr) {
+        if(!player)
+        {
             continue;
         }
 

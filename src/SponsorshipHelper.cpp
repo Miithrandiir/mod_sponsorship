@@ -42,7 +42,8 @@ bool SponsorshipHelper::canBenefit(Player * player1, Player *player2)
     QueryResult resultPlayer2 = LoginDatabase.Query("SELECT last_ip FROM account WHERE id = {}",
                                                      player1->GetSession()->GetAccountId());
 
-    if (resultPlayer1 == nullptr && resultPlayer2 == nullptr) {
+    if (!resultPlayer1 && !resultPlayer2)
+    {
         std::cout << "[Sponsorship] Attempt to read data from database, but no records found (Account id:"
                   << player1->GetSession()->GetAccountId() << " id: " << player2->GetSession()->GetAccountId() << " )"
                   << std::endl;
@@ -60,12 +61,14 @@ bool SponsorshipHelper::canBenefit(Player * player1, Player *player2)
 bool SponsorshipHelper::areInSponsorship(uint32 player1, uint32 player2)
 {
     auto it = std::find(Cache.begin(), Cache.end(), std::make_pair(player1, player2));
-    if(it != Cache.end()) {
+    if(it != Cache.end())
+    {
         return true;
     }
 
     it = std::find(Cache.begin(), Cache.end(), std::make_pair(player2, player1));
-    if(it != Cache.end()) {
+    if(it != Cache.end())
+    {
         return true;
     }
 
