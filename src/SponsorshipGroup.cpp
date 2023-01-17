@@ -25,9 +25,9 @@ void SponsorshipGroup::OnAddMember(Group * group, ObjectGuid guid)
             continue;
         }
 
-        if(SponsorshipHelper::areInSponsorship(playerAdded, member))
+        if(SponsorshipHelper::AreInSponsorship(playerAdded, member))
         {
-            std::vector<uint32> buffs = SponsorshipHelper::getBuff();
+            std::vector<uint32> buffs = SponsorshipHelper::GetBuff();
             std::cout << "size of buffs = " << buffs.size() << std::endl;
 
             for(uint32& buff : buffs)
@@ -42,8 +42,7 @@ void SponsorshipGroup::OnAddMember(Group * group, ObjectGuid guid)
 void SponsorshipGroup::OnRemoveMember(Group * group, ObjectGuid guid, RemoveMethod, ObjectGuid, const char *)
 {
     Player* player2 = ObjectAccessor::FindPlayer(guid);
-
-    if(player2 == nullptr)
+    if(!player2)
     {
         return;
     }
@@ -51,13 +50,14 @@ void SponsorshipGroup::OnRemoveMember(Group * group, ObjectGuid guid, RemoveMeth
     for(const Group::MemberSlot& playerGroup : group->GetMemberSlots())
     {
         Player* player = ObjectAccessor::FindPlayer(playerGroup.guid);
-        if(player == nullptr) {
+        if(!player)
+        {
             continue;
         }
 
-        if(SponsorshipHelper::areInSponsorship(player, player2))
+        if(SponsorshipHelper::AreInSponsorship(player, player2))
         {
-            std::vector<uint32> buffs = SponsorshipHelper::getBuff();
+            std::vector<uint32> buffs = SponsorshipHelper::GetBuff();
 
             for(uint32& buff : buffs)
             {

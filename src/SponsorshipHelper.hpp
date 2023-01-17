@@ -12,10 +12,10 @@
 class SponsorshipHelper
 {
 public:
-    static bool areInSponsorship(Player* , Player*);
-    static bool areInSponsorship(uint32 , uint32);
-    static bool canBenefit(Player*, Player*);
-    static std::vector<uint32> getBuff();
+    static bool AreInSponsorship(Player* , Player*);
+    static bool AreInSponsorship(uint32 , uint32);
+    static bool CanBenefit(Player*, Player*);
+    static std::vector<uint32> GetBuff();
     static std::vector<std::pair<uint32, uint32>> Cache;
 };
 

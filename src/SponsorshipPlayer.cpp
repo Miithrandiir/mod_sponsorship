@@ -6,25 +6,35 @@
 
 void SponsorshipPlayer::OnGiveXP(Player* player, uint32& amount, Unit*)
 {
-    Group* group = player->GetGroup();
-
-    if(group != nullptr)
+    if (!player)
     {
-        for(const Group::MemberSlot& item : group->GetMemberSlots())
+        return;
+    }
+
+    Group* group = player->GetGroup();
+    if(!group)
+    {
+        return;
+    }
+
+    for (const Group::MemberSlot& item : group->GetMemberSlots())
+    {
+        if (item.guid == player->GetGUID())
         {
-            if(item.guid == player->GetGUID())
-            {
-                continue;
-            }
+            continue;
+        }
 
-            Player* player2 = ObjectAccessor::FindPlayer(item.guid);
+        Player* player2 = ObjectAccessor::FindPlayer(item.guid);
+        if (!player2)
+        {
+            continue;
+        }
 
-            if(SponsorshipHelper::areInSponsorship(player->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId()))
-            {
-                std::cout << "default amount of xp : " << amount << std::endl;
-                amount *= sConfigMgr->GetOption<float>("Sponsorship.rateXp", 2.00f);
-                return;
-            }
+        if (SponsorshipHelper::AreInSponsorship(player->GetSession()->GetAccountId(), player2->GetSession()->GetAccountId()))
+        {
+            std::cout << "default amount of xp : " << amount << std::endl;
+            amount *= sConfigMgr->GetOption<float>("Sponsorship.rateXp", 2.00f);
+            return;
         }
     }
 }
