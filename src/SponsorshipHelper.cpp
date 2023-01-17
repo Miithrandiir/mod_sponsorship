@@ -79,6 +79,11 @@ bool SponsorshipHelper::AreInSponsorship(uint32 player1, uint32 player2)
                                               player1,
                                               sConfigMgr->GetOption<uint32>("Sponsorship.durationDay",90));
 
+    if (!result)
+    {
+        return false;
+    }
+
     Cache.emplace_back(player1, player2);
 
     return (result->GetRowCount() > 0);
